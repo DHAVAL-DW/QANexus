@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Nexus | Precision Communication Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'gradient': 'gradient 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' },
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        }
+
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+            top: 40%;
+            right: -10%;
+            animation-delay: -2s;
+        }
+
+        .blob-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
+            bottom: -10%;
+            left: 30%;
+            animation-delay: -4s;
+        }
+
+        /* Noise Texture */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Glass Card Premium */
+        .glass-premium {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-premium:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(99, 102, 241, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Gradient Border */
+        .gradient-border {
+            position: relative;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(236, 72, 153, 0.3), rgba(6, 182, 212, 0.5));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Template Card */
+        .template-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.7s;
+        }
+
+        .template-card:hover::after {
+            left: 100%;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        /* Expand Animation */
+        .expand-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .expand-content.open {
+            grid-template-rows: 1fr;
+        }
+
+        .inner-content {
+            overflow: hidden;
+        }
+
+        /* Status Badges */
+        .badge {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        /* Navigation Active State */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(to bottom, #6366f1, #ec4899);
+            border-radius: 0 4px 4px 0;
+            transition: height 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            height: 70%;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), transparent);
+            color: #fff;
+        }
+
+        /* Code Block Styling */
+        .code-block {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #ec4899);
+            border-radius: 10px;
+        }
+
+        /* Particle Canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Toast Notification */
+        .toast {
+            transform: translateY(100px) scale(0.9);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Search Glow */
+        .search-glow:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Table Styling */
+        .premium-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .premium-table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: scale(1.01);
+        }
+
+        /* One-liner Cards */
+        .oneline-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .oneline-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.15), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .oneline-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Category Icon Animation */
+        .cat-icon {
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover .cat-icon {
+            transform: rotate(12deg) scale(1.1);
+        }
+
+        /* Loading Skeleton */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Background Effects -->
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
+    <canvas id="particles"></canvas>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-premium border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+                        <div class="relative w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center border border-white/10">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-display font-bold tracking-tight text-white">
+                            QA <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Nexus</span>
+                        </h1>
+                        <p class="text-[10px] font-medium text-slate-400 tracking-widest uppercase">Precision Communication</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                        v3.0 Live
+                    </div>
+                    <button class="p-2 rounded-lg hover:bg-white/5 transition-colors text-slate-400 hover:text-white">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar -->
+            <aside class="lg:w-72 flex-shrink-0">
+                <div class="sticky top-24 space-y-6">
+                    <!-- Search -->
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                            <input type="text" id="searchInput" placeholder="Search templates..." 
+                                   class="w-full pl-10 pr-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none search-glow transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="glass-premium rounded-2xl p-4 space-y-3">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Overview</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="text-center p-3 rounded-xl bg-white/5">
+                                <div class="text-2xl font-display font-bold text-indigo-400" id="totalCount">12</div>
+                                <div class="text-[10px] text-slate-500 uppercase mt-1">Templates</div>
+                            </div>
+                            <div class="text-center p-3 rounded-xl bg-white/5">
+                                <div class="text-2xl font-display font-bold text-purple-400" id="catCount">3</div>
+                                <div class="text-[10px] text-slate-500 uppercase mt-1">Categories</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="space-y-1">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-3 mb-3">Categories</p>
+                        <button class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all" data-filter="all">
+                            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                            <span>All Templates</span>
+                            <span class="ml-auto text-[10px] bg-white/10 px-2 py-0.5 rounded-full">12</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all" data-filter="communication">
+                            <i data-lucide="message-square" class="w-4 h-4"></i>
+                            <span>Communication</span>
+                            <span class="ml-auto text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">1</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all" data-filter="status">
+                            <i data-lucide="activity" class="w-4 h-4"></i>
+                            <span>Status Updates</span>
+                            <span class="ml-auto text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">6</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all" data-filter="review">
+                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                            <span>Review Notes</span>
+                            <span class="ml-auto text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full">5</span>
+                        </button>
+                    </nav>
+
+                    <!-- Quick Tip -->
+                    <div class="glass-premium rounded-2xl p-4 border-l-2 border-indigo-500">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="zap" class="w-4 h-4 text-indigo-400 mt-0.5"></i>
+                            <div>
+                                <p class="text-xs font-semibold text-white mb-1">Pro Tip</p>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Click any template to expand and copy with one click.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 space-y-12">
+
+                <!-- Hero Section -->
+                <div class="relative overflow-hidden rounded-3xl glass-premium p-8 md:p-12">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                    <div class="relative z-10">
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4 leading-tight">
+                            Streamline Your <br>
+                            <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">QA Communication</span>
+                        </h2>
+                        <p class="text-slate-400 max-w-lg mb-6 leading-relaxed">
+                            Precision-crafted templates for every scenario. From requirement requests to production validations, communicate with clarity and confidence.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">Jira Ready</span>
+                            <span class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium">Slack Compatible</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium">One-Click Copy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Communication Section -->
+                <section class="animate-slide" data-category="communication">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/25">
+                            <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-display font-bold text-white">Communication</h2>
+                            <p class="text-sm text-slate-400">Initial outreach and requirement gathering</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Template Card -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="requirements test case preparation detail" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-indigo-500/30">
+                                            Core Template
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors mb-1">Request for Detailed Requirements</h3>
+                                    <p class="text-sm text-slate-400">Preparing test cases while story description is insufficient</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-indigo-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-indigo-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Message Preview</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl text-xs font-bold hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg shadow-indigo-500/25 group/btn">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform"></i>
+                                                Copy Template
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line relative group/code">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Assignee/Team],
+
+I am currently preparing test cases for this story to ensure comprehensive coverage. However, the description would benefit from additional detail to fully understand the requirements.
+
+Could you please update it to include:
+• Detailed user flows and interactions
+• Expected behavior and outcomes
+• Clear acceptance criteria
+• Any known dependencies or constraints
+
+This will help us create accurate and effective test cases. Thank you for your support.
+
+Tag: Developer Lead, [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Status Updates Section -->
+                <section class="animate-slide" data-category="status">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg shadow-emerald-500/25">
+                            <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-display font-bold text-white">Status Updates</h2>
+                            <p class="text-sm text-slate-400">Production validations and blocker management</p>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4">
+                        <!-- Developer-Led Validation -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="developer validation production live" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-500/30">
+                                            Production
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors mb-1">Developer-Led Validation</h3>
+                                    <p class="text-sm text-slate-400">Testing bypass for production-only validation</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-emerald-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-bold hover:from-emerald-500 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/25">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Team],
+
+Thank you for the update. As noted by @[Developer], this functionality cannot be tested within the QA environment by our team. I am updating the ticket status accordingly.
+
+Please proceed with validation on the live or sandbox instance as planned, and let us know if any support is needed from our side.
+
+Tag: Developer Lead, [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Linked Ticket Dependency -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="dependency blocked linked ticket" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-amber-500/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-amber-500/30">
+                                            Blocked
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-amber-300 transition-colors mb-1">Linked Ticket Dependency</h3>
+                                    <p class="text-sm text-slate-400">Wait for resolution of external dependencies</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-amber-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl text-xs font-bold hover:from-amber-500 hover:to-orange-500 transition-all shadow-lg shadow-amber-500/25">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Assignee/Team],
+
+I am currently unable to proceed with validation for this ticket as it depends on the resolution of the linked ticket ([Ticket ID: Title]).
+
+Tag: Developer Lead, [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QA Hold -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="qa hold pause pending" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-rose-500/20 text-rose-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-rose-500/30">
+                                            Paused
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-rose-300 transition-colors mb-1">Placing Ticket on QA Hold</h3>
+                                    <p class="text-sm text-slate-400">Formal pause for major blockers</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-rose-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-rose-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6 space-y-4">
+                                        <div class="gradient-border p-4 rounded-xl">
+                                            <div class="relative z-10">
+                                                <p class="text-xs font-bold text-rose-300 mb-3 uppercase tracking-tight flex items-center gap-2">
+                                                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                                    Requirement Checklist
+                                                </p>
+                                                <ul class="space-y-2">
+                                                    <li class="flex items-center gap-3 text-sm text-slate-300">
+                                                        <div class="w-5 h-5 rounded bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                                            <i data-lucide="check" class="w-3 h-3 text-rose-400"></i>
+                                                        </div>
+                                                        Add explanation to Reviewer Notes
+                                                    </li>
+                                                    <li class="flex items-center gap-3 text-sm text-slate-300">
+                                                        <div class="w-5 h-5 rounded bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                                            <i data-lucide="check" class="w-3 h-3 text-rose-400"></i>
+                                                        </div>
+                                                        Clear notes when resuming
+                                                    </li>
+                                                    <li class="flex items-center gap-3 text-sm text-slate-300">
+                                                        <div class="w-5 h-5 rounded bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                                            <i data-lucide="check" class="w-3 h-3 text-rose-400"></i>
+                                                        </div>
+                                                        Complete scenario validation first
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-xl text-xs font-bold hover:from-rose-500 hover:to-pink-500 transition-all shadow-lg shadow-rose-500/25">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Team],
+
+I am placing this ticket on QA Hold temporarily. The validation is dependent on the resolution of the linked bug ([Bug Ticket ID: Title]), and testing prior to its resolution may not yield accurate results.
+
+Please update this ticket once the bug is resolved, and we will resume validation promptly.
+
+Tag: Developer Lead, [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remediation -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="remediation validation complete bugs" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-violet-500/20 text-violet-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-violet-500/30">
+                                            Fix Required
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-violet-300 transition-colors mb-1">Moving to Remediation</h3>
+                                    <p class="text-sm text-slate-400">Validation complete but linked bugs prevent release</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-violet-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-violet-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-xl text-xs font-bold hover:from-violet-500 hover:to-purple-500 transition-all shadow-lg shadow-violet-500/25">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Team/Assignee],
+
+This story ticket is being moved to Remediation status due to linked bug tickets that require resolution.
+Please note that validation has been completed from the QA side. Once the linked bugs are resolved, we will be able to proceed with the release of this story.
+Cc: Developer Lead, [Your Lead])</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Not Deployed -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="code not deployed sandbox environment" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-slate-500/20 text-slate-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-slate-500/30">
+                                            Infrastructure
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-slate-300 transition-colors mb-1">Code Not Yet Deployed</h3>
+                                    <p class="text-sm text-slate-400">Ticket marked Ready for QA but code unavailable</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-slate-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-slate-300 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-gray-600 text-white rounded-xl text-xs font-bold hover:from-slate-500 hover:to-gray-500 transition-all shadow-lg">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Team],
+
+I noticed this ticket is marked as "Ready for QA"; however, the code does not appear to be available in the Sandbox environment yet.
+
+We will validate once the code deploys to sandbox.
+
+Tag: [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Release with Non-Blocking Bugs -->
+                        <div class="template-card glass-premium rounded-2xl overflow-hidden group cursor-pointer" data-keywords="release non-blocking bugs approved" onclick="toggleExpand(this)">
+                            <div class="p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="badge px-3 py-1 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-500/30">
+                                            Stable
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors mb-1">Release with Non-Blocking Bugs</h3>
+                                    <p class="text-sm text-slate-400">Linked bugs exist but do not prevent story completion</p>
+                                </div>
+                                <div class="ml-4 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center chevron transition-all group-hover:bg-emerald-500/20">
+                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+                                </div>
+                            </div>
+                            <div class="expand-content">
+                                <div class="inner-content">
+                                    <div class="px-6 pb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Template</span>
+                                            <button onclick="copyContent(this, event)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl text-xs font-bold hover:from-emerald-500 hover:to-green-500 transition-all shadow-lg shadow-emerald-500/25">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="code-block rounded-xl p-6 text-sm leading-relaxed font-mono text-slate-300 whitespace-pre-line">
+                                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                                <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
+                                            </div>
+                                            <div class="mt-4">Hi [Team],
+
+Following our assessment, this story ticket is ready for release. While there are linked bugs pending, they have been evaluated and do not block the completion of this story or prevent it from meeting the defined acceptance criteria.
+
+These bugs will be tracked and addressed separately in subsequent iterations. The story functionality has been validated and is ready for production.
+
+Tag: Developer Lead, [Your Lead]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Review Notes Section -->
+                <section class="animate-slide" data-category="review">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl shadow-lg shadow-purple-500/25">
+                            <i data-lucide="clipboard-list" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-display font-bold text-white">Review Notes</h2>
+                            <p class="text-sm text-slate-400">Standardized QA reviewer documentation</p>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Table -->
+                    <div class="gradient-border rounded-2xl overflow-hidden mb-6">
+                        <div class="relative z-10 bg-slate-900/80">
+                            <div class="p-6 border-b border-white/5 flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-white text-lg">Story Tickets — Detailed Format</h3>
+                                    <p class="text-xs text-slate-400 mt-1">Comprehensive reviewer notes for story validation</p>
+                                </div>
+                                <button onclick="copyTable('reviewerTable')" class="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold transition-all hover:scale-105">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                    Copy Table
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table id="reviewerTable" class="w-full text-sm premium-table">
+                                    <thead>
+                                        <tr class="border-b border-white/5 bg-white/5">
+                                            <th class="text-left py-4 px-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Focus Area</th>
+                                            <th class="text-left py-4 px-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Reviewer Note</th>
+                                            <th class="text-right py-4 px-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-white/5">
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                                                        <i data-lucide="check-circle" class="w-4 h-4 text-indigo-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Functionality</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"Comprehensive testing completed including edge cases; no critical defects identified."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                                                        <i data-lucide="target" class="w-4 h-4 text-purple-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Acceptance Criteria</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"All acceptance criteria verified and passed successfully."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                                                        <i data-lucide="git-compare" class="w-4 h-4 text-amber-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Regression</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"Regression testing completed; no impact on existing features."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                                                        <i data-lucide="play-circle" class="w-4 h-4 text-cyan-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Test Execution</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"Test cases executed; results align with expected behavior."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center">
+                                                        <i data-lucide="shield" class="w-4 h-4 text-rose-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Security</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"Security validations completed; no vulnerabilities detected."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                                                        <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Coverage</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"All test scenarios covered, including negative and edge cases."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group">
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                                                        <i data-lucide="bug" class="w-4 h-4 text-violet-400"></i>
+                                                    </div>
+                                                    <span class="font-semibold text-white">Bug Fixes</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6 text-slate-400 italic">"Fixes verified and functioning as expected without regression."</td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                    Pass
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- One-liner Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="oneline-card p-6 rounded-2xl border border-white/5 cursor-pointer group" onmousemove="handleMouseMove(event, this)" onclick="copyText(this)">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                                        <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white">Story Validation</h4>
+                                        <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">One-Liner</span>
+                                    </div>
+                                </div>
+                                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="copy" class="w-5 h-5 text-indigo-400"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-300 italic leading-relaxed mb-4">"Functionality, test coverage, bug fixes, edge cases, performance, and regression validated per acceptance criteria."</p>
+                            <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                                <i data-lucide="mouse-pointer-click" class="w-3 h-3"></i>
+                                Click to copy
+                            </div>
+                        </div>
+
+                        <div class="oneline-card p-6 rounded-2xl border border-white/5 cursor-pointer group" onmousemove="handleMouseMove(event, this)" onclick="copyText(this)">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                                        <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white">Epic Validation</h4>
+                                        <span class="text-[10px] text-purple-400 font-bold uppercase tracking-wider">One-Liner</span>
+                                    </div>
+                                </div>
+                                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="copy" class="w-5 h-5 text-purple-400"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-300 italic leading-relaxed mb-4">"Scope alignment, cross-story integration, end-to-end testing, regression, and user experience verified; all stories completed and documented."</p>
+                            <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                                <i data-lucide="mouse-pointer-click" class="w-3 h-3"></i>
+                                Click to copy
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed bottom-8 left-1/2 -translate-x-1/2 z-[100]">
+        <div class="glass-premium border border-white/10 rounded-2xl px-6 py-4 shadow-2xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <i data-lucide="check" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-white">Successfully Copied</p>
+                <p class="text-xs text-slate-400">Ready to paste into Jira or Slack</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Particle System
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+
+                // Mouse interaction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    const force = (100 - distance) / 100;
+                    this.x -= dx * force * 0.02;
+                    this.y -= dy * force * 0.02;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections
+            particles.forEach((a, index) => {
+                particles.slice(index + 1).forEach(b => {
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Toggle Expand
+        function toggleExpand(element) {
+            const card = element.closest('.template-card');
+            const content = card.querySelector('.expand-content');
+            const isOpen = content.classList.contains('open');
+            
+            // Close others in same section
+            card.closest('section').querySelectorAll('.expand-content.open').forEach(el => {
+                if (el !== content) {
+                    el.classList.remove('open');
+                    el.closest('.template-card').classList.remove('expanded');
+                }
+            });
+
+            content.classList.toggle('open');
+            card.classList.toggle('expanded');
+            
+            // Re-initialize icons for dynamic content
+            setTimeout(() => lucide.createIcons(), 100);
+        }
+
+        // Search & Filter
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.template-card');
+        const sections = document.querySelectorAll('section[data-category]');
+        const tabs = document.querySelectorAll('[data-filter]');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let hasResults = false;
+            
+            cards.forEach(card => {
+                const keywords = card.getAttribute('data-keywords').toLowerCase();
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const desc = card.querySelector('p').innerText.toLowerCase();
+                
+                if (term === "" || keywords.includes(term) || title.includes(term) || desc.includes(term)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'slideIn 0.5s ease forwards';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide sections based on visible cards
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.template-card[style*="display: block"]');
+                section.style.display = visibleCards.length > 0 || term === "" ? 'block' : 'none';
+            });
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const filter = tab.getAttribute('data-filter');
+                
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.add('text-slate-400');
+                });
+                tab.classList.add('active');
+                tab.classList.remove('text-slate-400');
+
+                sections.forEach(section => {
+                    if (filter === 'all' || section.getAttribute('data-category') === filter) {
+                        section.style.display = 'block';
+                        section.style.animation = 'slideIn 0.5s ease forwards';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Copy Functions
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function copyContent(btn, event) {
+            event.stopPropagation();
+            const text = btn.closest('.inner-content').querySelector('.code-block').innerText;
+            navigator.clipboard.writeText(text).then(showToast);
+        }
+
+        function copyText(element) {
+            const text = element.querySelector('p').innerText.replace(/"/g, '');
+            navigator.clipboard.writeText(text).then(showToast);
+        }
+
+        function copyTable(id) {
+            const table = document.getElementById(id);
+            let text = "";
+            for (let row of table.rows) {
+                for (let cell of row.cells) {
+                    text += cell.innerText + "\t";
+                }
+                text += "\n";
+            }
+            navigator.clipboard.writeText(text).then(showToast);
+        }
+
+        // Mouse tracking for one-liner cards
+        function handleMouseMove(e, element) {
+            const rect = element.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            element.style.setProperty('--mouse-x', `${x}%`);
+            element.style.setProperty('--mouse-y', `${y}%`);
+        }
+
+        // Update counts
+        document.getElementById('totalCount').textContent = cards.length;
+        
+        // Entrance animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(section);
+        });
+
+        // Add slideIn keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
