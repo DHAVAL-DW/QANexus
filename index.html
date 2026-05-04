@@ -1903,6 +1903,355 @@
             transition-timing-function: ease;
         }
 
+    
+        /* ===== JIRA VALIDATION SECTION ===== */
+        .jira-card-bg {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .jira-preview-box {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+        }
+
+        .jira-preview-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.15));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .jira-label {
+            color: #94a3b8;
+        }
+
+        .jira-value {
+            color: #e2e8f0;
+        }
+
+        .jira-value.editable {
+            border-bottom: 1px dashed rgba(99, 102, 241, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: text;
+        }
+
+        .jira-value.editable:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-bottom-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .jira-value.editable:focus {
+            outline: none;
+            background: rgba(99, 102, 241, 0.08);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.6);
+        }
+
+        .editable-field {
+            border-bottom: 1px dashed rgba(99, 102, 241, 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: text;
+            display: inline-block;
+        }
+
+        .editable-field:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-bottom-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .editable-field:focus {
+            outline: none;
+            background: rgba(99, 102, 241, 0.08);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.6);
+        }
+
+        .jira-copy-btn {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jira-copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .jira-copy-btn:hover::before {
+            left: 100%;
+        }
+
+        .jira-copy-btn.copied {
+            background: linear-gradient(135deg, #059669, #10b981) !important;
+        }
+
+        /* Status toggle animation */
+        #jira-status-badge {
+            transition: all 0.3s ease;
+        }
+
+        .status-failed {
+            background: rgba(244, 63, 94, 0.1) !important;
+            border-color: rgba(244, 63, 94, 0.2) !important;
+            color: #f43f5e !important;
+        }
+
+        .status-failed .status-dot {
+            background: #f43f5e !important;
+        }
+
+        /* Light mode Jira section */
+        [data-theme="light"] .jira-card-bg {
+            background: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        [data-theme="light"] .jira-preview-box {
+            background: linear-gradient(135deg, rgba(241, 245, 249, 0.8), rgba(255, 255, 255, 0.9)) !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
+        }
+
+        [data-theme="light"] .jira-preview-box::before {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.1));
+        }
+
+        [data-theme="light"] .jira-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="light"] .jira-value {
+            color: #0f172a !important;
+        }
+
+        [data-theme="light"] .jira-value.editable {
+            border-bottom-color: rgba(99, 102, 241, 0.2);
+        }
+
+        [data-theme="light"] .jira-value.editable:hover {
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        [data-theme="light"] .editable-field {
+            color: #475569 !important;
+            border-bottom-color: rgba(99, 102, 241, 0.2);
+        }
+
+        [data-theme="light"] .editable-field:hover {
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        [data-theme="light"] .jira-copy-btn {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        [data-theme="light"] .jira-copy-btn:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        [data-theme="light"] #jira-status-badge {
+            background: rgba(16, 185, 129, 0.1) !important;
+            border-color: rgba(16, 185, 129, 0.2) !important;
+            color: #059669 !important;
+        }
+
+        [data-theme="light"] #jira-status-badge .status-dot {
+            background: #10b981 !important;
+        }
+
+        [data-theme="light"] #jira-status-badge.status-failed {
+            background: rgba(244, 63, 94, 0.1) !important;
+            border-color: rgba(244, 63, 94, 0.2) !important;
+            color: #e11d48 !important;
+        }
+
+        [data-theme="light"] .status-failed .status-dot {
+            background: #f43f5e !important;
+        }
+
+        [data-theme="light"] .text-rose-400 {
+            color: #f43f5e !important;
+        }
+
+        [data-theme="light"] .text-blue-400 {
+            color: #3b82f6 !important;
+        }
+
+        [data-theme="light"] .text-indigo-400 {
+            color: #6366f1 !important;
+        }
+
+        [data-theme="light"] .text-emerald-400 {
+            color: #10b981 !important;
+        }
+
+        [data-theme="light"] .text-amber-400 {
+            color: #f59e0b !important;
+        }
+
+        [data-theme="light"] .text-purple-400 {
+            color: #a855f7 !important;
+        }
+
+        [data-theme="light"] .text-cyan-400 {
+            color: #06b6d4 !important;
+        }
+
+        [data-theme="light"] .text-pink-400 {
+            color: #ec4899 !important;
+        }
+
+        [data-theme="light"] .bg-blue-500\/10 {
+            background: rgba(59, 130, 246, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-indigo-500\/10 {
+            background: rgba(99, 102, 241, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-emerald-500\/10 {
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-amber-500\/10 {
+            background: rgba(245, 158, 11, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-purple-500\/10 {
+            background: rgba(168, 85, 247, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-cyan-500\/10 {
+            background: rgba(6, 182, 212, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-pink-500\/10 {
+            background: rgba(236, 72, 153, 0.08) !important;
+        }
+
+        [data-theme="light"] .bg-gradient-to-br.from-blue-500.to-indigo-600 {
+            background: linear-gradient(to bottom right, #3b82f6, #4f46e5) !important;
+        }
+
+        [data-theme="light"] .bg-gradient-to-r.from-blue-600.to-indigo-600 {
+            background: linear-gradient(to right, #2563eb, #4f46e5) !important;
+        }
+
+        [data-theme="light"] .shadow-blue-500\/25 {
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2) !important;
+        }
+
+        [data-theme="light"] .shadow-blue-500\/20 {
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.15) !important;
+        }
+
+        [data-theme="light"] .border-white\/5 {
+            border-color: rgba(0, 0, 0, 0.04) !important;
+        }
+
+        [data-theme="light"] section[data-category="jira"] .text-white {
+            color: #0f172a !important;
+        }
+
+        [data-theme="light"] section[data-category="jira"] .text-slate-400 {
+            color: #64748b !important;
+        }
+
+        [data-theme="light"] section[data-category="jira"] .text-slate-300 {
+            color: #475569 !important;
+        }
+
+        [data-theme="light"] section[data-category="jira"] .text-slate-500 {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="light"] .glass-premium {
+            background: rgba(255, 255, 255, 0.6) !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
+        }
+
+        [data-theme="light"] .oneline-card {
+            background: linear-gradient(135deg, rgba(241, 245, 249, 0.8), rgba(255, 255, 255, 0.9)) !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
+        }
+
+        [data-theme="light"] .gradient-border {
+            background: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        [data-theme="light"] .gradient-border .bg-slate-900\/80 {
+            background: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        [data-theme="light"] .gradient-border .text-white {
+            color: #0f172a !important;
+        }
+
+        [data-theme="light"] .gradient-border .text-slate-400 {
+            color: #64748b !important;
+        }
+
+    
+        /* Status badge interactive states */
+        #jira-status-badge-passed,
+        #jira-status-badge-failed {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        #jira-status-badge-passed:hover,
+        #jira-status-badge-failed:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #jira-status-badge-passed:active,
+        #jira-status-badge-failed:active {
+            transform: scale(0.95);
+        }
+
+        /* Light mode status badge overrides */
+        [data-theme="light"] #jira-status-badge-passed {
+            background: rgba(16, 185, 129, 0.1) !important;
+            border-color: rgba(16, 185, 129, 0.2) !important;
+            color: #059669 !important;
+        }
+
+        [data-theme="light"] #jira-status-badge-passed .bg-emerald-400 {
+            background: #10b981 !important;
+        }
+
+        [data-theme="light"] #jira-status-badge-failed {
+            background: rgba(244, 63, 94, 0.1) !important;
+            border-color: rgba(244, 63, 94, 0.2) !important;
+            color: #e11d48 !important;
+        }
+
+        [data-theme="light"] #jira-status-badge-failed .bg-rose-400 {
+            background: #f43f5e !important;
+        }
+
+        [data-theme="light"] #jira-status-badge-passed,
+        [data-theme="light"] #jira-status-badge-failed {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
     </style>
 <base target="_blank">
 </head>
@@ -1975,11 +2324,11 @@
                         <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Overview</p>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="text-center p-3 rounded-xl bg-white/5">
-                                <div class="text-2xl font-display font-bold text-indigo-400" id="totalCount">12</div>
+                                <div class="text-2xl font-display font-bold text-indigo-400" id="totalCount">13</div>
                                 <div class="text-[10px] text-slate-500 uppercase mt-1">Templates</div>
                             </div>
                             <div class="text-center p-3 rounded-xl bg-white/5">
-                                <div class="text-2xl font-display font-bold text-purple-400" id="catCount">3</div>
+                                <div class="text-2xl font-display font-bold text-purple-400" id="catCount">4</div>
                                 <div class="text-[10px] text-slate-500 uppercase mt-1">Categories</div>
                             </div>
                         </div>
@@ -1991,7 +2340,7 @@
                         <button class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all" data-filter="all">
                             <i data-lucide="layout-grid" class="w-4 h-4"></i>
                             <span>All Templates</span>
-                            <span class="ml-auto text-[10px] bg-white/10 px-2 py-0.5 rounded-full">12</span>
+                            <span class="ml-auto text-[10px] bg-white/10 px-2 py-0.5 rounded-full">13</span>
                         </button>
                         <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all" data-filter="communication">
                             <i data-lucide="message-square" class="w-4 h-4"></i>
@@ -2007,6 +2356,11 @@
                             <i data-lucide="clipboard-list" class="w-4 h-4"></i>
                             <span>Review Notes</span>
                             <span class="ml-auto text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full">5</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all" data-filter="jira">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                            <span>Jira Validation</span>
+                            <span class="ml-auto text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">1</span>
                         </button>
                     </nav>
 
@@ -2090,7 +2444,7 @@
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Assignee/Team],
 
 I am currently preparing test cases for this story to ensure comprehensive coverage. However, the description would benefit from additional detail to fully understand the requirements.
 
@@ -2155,7 +2509,7 @@ Tag: Developer Lead, [Your Lead]</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Team],
 
 Thank you for the update. As noted by @[Developer], this functionality cannot be tested within the QA environment by our team. I am updating the ticket status accordingly.
 
@@ -2199,7 +2553,7 @@ Tag: Developer Lead, [Your Lead]</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Assignee/Team],
 
 I am currently unable to proceed with validation for this ticket as it depends on the resolution of the linked ticket ([Ticket ID: Title]).
 
@@ -2269,7 +2623,7 @@ Tag: Developer Lead, [Your Lead]</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Team],
 
 I am placing this ticket on QA Hold temporarily. The validation is dependent on the resolution of the linked bug ([Bug Ticket ID: Title]), and testing prior to its resolution may not yield accurate results.
 
@@ -2313,7 +2667,7 @@ Tag: Developer Lead, [Your Lead]</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Team/Assignee],
 
 This story ticket is being moved to Remediation status due to linked bug tickets that require resolution.
 Please note that validation has been completed from the QA side. Once the linked bugs are resolved, we will be able to proceed with the release of this story.
@@ -2355,7 +2709,7 @@ Cc: Developer Lead, [Your Lead])</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Team],
 
 I noticed this ticket is marked as "Ready for QA"; however, the code does not appear to be available in the Sandbox environment yet.
 
@@ -2399,7 +2753,7 @@ Tag: [Your Lead]</div>
                                                 <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30"></div>
                                                 <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30"></div>
                                             </div>
-                                            <div class="mt-4">Hello Team,
+                                            <div class="mt-4">Hi [Team],
 
 Following our assessment, this story ticket is ready for release. While there are linked bugs pending, they have been evaluated and do not block the completion of this story or prevent it from meeting the defined acceptance criteria.
 
@@ -2657,6 +3011,219 @@ Tag: Developer Lead, [Your Lead]</div>
                         </div>
                     </div>
                 </section>
+
+                <!-- Jira Validation Section -->
+                <section class="animate-slide" data-category="jira">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg shadow-blue-500/25">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-display font-bold text-white section-title">Jira Validation</h2>
+                            <p class="text-sm text-slate-400 section-subtitle">Formatted comment templates for ticket validation</p>
+                        </div>
+                    </div>
+
+                    <!-- Jira Comment Composer -->
+                    <div class="gradient-border rounded-2xl overflow-hidden mb-6">
+                        <div class="relative z-10 bg-slate-900/80 jira-card-bg">
+                            <div class="p-6 border-b border-white/5 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-lg">Validation Comment Composer</h3>
+                                        <p class="text-xs text-slate-400 mt-1">Rich-text formatted for Jira's editor</p>
+                                    </div>
+                                </div>
+                                <button onclick="copyJiraComment()" class="jira-copy-btn flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-xs font-bold hover:from-blue-500 hover:to-indigo-500 transition-all shadow-lg shadow-blue-500/25 group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                    Copy for Jira
+                                </button>
+                            </div>
+
+                            <!-- Live Preview -->
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Live Preview</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                        <span class="text-[10px] text-slate-500 font-medium">Rich Text Format</span>
+                                    </div>
+                                </div>
+
+                                <div class="jira-preview-box rounded-xl p-6 text-sm leading-relaxed relative overflow-hidden group/preview">
+                                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+                                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 rounded-xl opacity-0 group-hover/preview:opacity-100 transition-opacity duration-500"></div>
+                                    <div class="relative z-10" id="jira-comment">
+                                        <div class="mb-4 pb-3 border-b border-white/5">
+                                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Outcome of Validation</span>
+                                        </div>
+
+                                        <div class="space-y-3">
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M4 12h16"/><path d="M12 4v16"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Module:</span>
+                                                    <span class="text-sm text-blue-400 font-medium ml-1 jira-value" id="jira-module">Test</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Environment:</span>
+                                                    <span class="text-sm text-indigo-400 font-medium ml-1 jira-value" id="jira-env">QA / Sandbox / DevTeam</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Version:</span>
+                                                    <span class="text-sm text-emerald-400 font-medium ml-1 jira-value" id="jira-version">v3.9.5</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Status:</span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20 ml-1 cursor-pointer hover:opacity-80 transition-all" id="jira-status-badge-passed" onclick="setJiraStatus('Passed')" title="Click to set Passed">
+                                                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                        <span id="jira-status-passed">Passed</span>
+                                                    </span>
+                                                    <span class="text-slate-500 text-xs mx-1">/</span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 text-[10px] font-bold border border-rose-500/20 cursor-pointer hover:opacity-80 transition-all" id="jira-status-badge-failed" onclick="setJiraStatus('Failed')" title="Click to set Failed">
+                                                        <span class="w-1.5 h-1.5 bg-rose-400 rounded-full"></span>
+                                                        <span id="jira-status-failed">Failed</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-purple-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Notes:</span>
+                                                    <span class="text-sm text-slate-400 ml-1 jira-value editable" contenteditable="true" id="jira-notes" onclick="selectAllText(this)">No issues found / [Additional comments, if any]</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-cyan-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Attachment:</span>
+                                                    <span class="text-sm text-slate-400 ml-1 jira-value editable" contenteditable="true" id="jira-attachment" onclick="selectAllText(this)">[Add relevant files, if applicable]</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-pink-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-xs font-semibold text-slate-300 jira-label">Cc:</span>
+                                                    <span class="text-sm text-blue-400 font-medium ml-1 jira-value" id="jira-cc">@Dhaval Vaghela</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-5 pt-4 border-t border-white/5">
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1 block">Validation Summary</span>
+                                                    <p class="text-sm text-slate-300 leading-relaxed">
+                                                        The functionality of the specified module was tested in the mentioned environment 
+                                                        (<span class="text-emerald-400 font-medium" id="jira-summary-version">v3.9.5</span>). 
+                                                        Based on the results, the ticket is 
+                                                        <span class="text-emerald-400 font-medium" id="jira-summary-status">working correctly</span>.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Edit Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="oneline-card p-5 rounded-2xl border border-white/5 cursor-pointer group" onmousemove="handleMouseMove(event, this)" onclick="focusEdit('jira-module')">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M4 12h16"/><path d="M12 4v16"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Module</h4>
+                                    <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Editable</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400 editable-field" contenteditable="true" id="edit-module" oninput="syncField('module')">Test</p>
+                        </div>
+
+                        <div class="oneline-card p-5 rounded-2xl border border-white/5 cursor-pointer group" onmousemove="handleMouseMove(event, this)" onclick="focusEdit('jira-env')">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Environment</h4>
+                                    <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Editable</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400 editable-field" contenteditable="true" id="edit-env" oninput="syncField('env')">QA / Sandbox / DevTeam</p>
+                        </div>
+
+                        <div class="oneline-card p-5 rounded-2xl border border-white/5 cursor-pointer group" onmousemove="handleMouseMove(event, this)" onclick="focusEdit('jira-version')">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Version</h4>
+                                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Editable</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400 editable-field" contenteditable="true" id="edit-version" oninput="syncField('version')">v3.9.5</p>
+                        </div>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="glass-premium rounded-2xl p-5 border-l-2 border-blue-500">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold text-white mb-2">How to use</p>
+                                <ul class="space-y-1.5 text-[11px] text-slate-400">
+                                    <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-blue-400"></span>Click any field above to edit values in real-time</li>
+                                    <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-blue-400"></span>Toggle <span class="text-emerald-400 font-medium">Passed</span> / <span class="text-rose-400 font-medium">Failed</span> status by clicking</li>
+                                    <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-blue-400"></span>Click <span class="text-white font-medium">"Copy for Jira"</span> to copy formatted HTML to clipboard</li>
+                                    <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-blue-400"></span>Paste directly into Jira's rich text editor — colors preserved</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </main>
         </div>
     </div>
@@ -2911,6 +3478,175 @@ Tag: Developer Lead, [Your Lead]</div>
             section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
             observer.observe(section);
         });
+
+
+        // ===== JIRA VALIDATION FUNCTIONS =====
+        let jiraStatus = 'Passed';
+
+        function setJiraStatus(status) {
+            jiraStatus = status;
+            const badgePassed = document.getElementById('jira-status-badge-passed');
+            const badgeFailed = document.getElementById('jira-status-badge-failed');
+            const summaryStatus = document.getElementById('jira-summary-status');
+
+            if (status === 'Passed') {
+                // Activate Passed badge
+                badgePassed.style.opacity = '1';
+                badgePassed.style.transform = 'scale(1)';
+                badgePassed.style.filter = 'none';
+
+                // Dim Failed badge
+                badgeFailed.style.opacity = '0.4';
+                badgeFailed.style.transform = 'scale(0.9)';
+                badgeFailed.style.filter = 'grayscale(0.5)';
+
+                summaryStatus.textContent = 'working correctly';
+                summaryStatus.classList.remove('text-rose-400');
+                summaryStatus.classList.add('text-emerald-400');
+            } else {
+                // Dim Passed badge
+                badgePassed.style.opacity = '0.4';
+                badgePassed.style.transform = 'scale(0.9)';
+                badgePassed.style.filter = 'grayscale(0.5)';
+
+                // Activate Failed badge
+                badgeFailed.style.opacity = '1';
+                badgeFailed.style.transform = 'scale(1)';
+                badgeFailed.style.filter = 'none';
+
+                summaryStatus.textContent = 'not working as expected';
+                summaryStatus.classList.remove('text-emerald-400');
+                summaryStatus.classList.add('text-rose-400');
+            }
+        }
+
+        // Initialize on load
+        function initJiraStatus() {
+            setJiraStatus('Passed');
+        }
+
+        function selectAllText(element) {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        function syncField(field) {
+            const editVal = document.getElementById('edit-' + field).textContent;
+            const displayEl = document.getElementById('jira-' + field);
+            if (displayEl) {
+                displayEl.textContent = editVal;
+            }
+            if (field === 'version') {
+                const summaryVer = document.getElementById('jira-summary-version');
+                if (summaryVer) summaryVer.textContent = editVal;
+            }
+        }
+
+        function focusEdit(elementId) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.focus();
+                selectAllText(el);
+            }
+        }
+
+        async function copyJiraComment() {
+            const commentDiv = document.getElementById('jira-comment');
+            const btn = document.querySelector('.jira-copy-btn');
+            const toast = document.getElementById('toast');
+
+            // Build the formatted HTML for Jira
+            const module = document.getElementById('jira-module').textContent;
+            const env = document.getElementById('jira-env').textContent;
+            const version = document.getElementById('jira-version').textContent;
+            const status = jiraStatus;
+            const notes = document.getElementById('jira-notes').textContent;
+            const attachment = document.getElementById('jira-attachment').textContent;
+            const cc = document.getElementById('jira-cc').textContent;
+
+            const statusColor = status === 'Passed' ? '#36B37E' : '#FF5630';
+            const summaryText = status === 'Passed' ? 'working correctly' : 'not working as expected';
+            const summaryColor = status === 'Passed' ? '#36B37E' : '#FF5630';
+
+            const jiraHtml = `<strong style="color: #172B4D;">Outcome of Validation:</strong><br><br>
+<strong style="color: #172B4D;">Module:</strong> <strong style="color: #4C9AFF;">${module}</strong><br>
+<strong style="color: #172B4D;">Environment:</strong> <strong style="color: #4C9AFF;">${env}</strong><br>
+<strong style="color: #172B4D;">Environment Version:</strong> <strong style="color: #36B37E;">${version}</strong><br>
+<strong style="color: #172B4D;">Validation Status:</strong> <strong style="color: ${statusColor};">${status}</strong><br>
+<strong style="color: #172B4D;">Notes:</strong> <strong style="color: #97A0AF;">${notes}</strong><br>
+<strong style="color: #172B4D;">Attachment:</strong> <strong style="color: #97A0AF;">${attachment}</strong><br>
+<strong style="color: #172B4D;">Cc:</strong> <strong style="color: #4C9AFF;">${cc}</strong><br><br>
+<strong style="color: #172B4D;">Validation Summary:</strong><br>
+<span style="color: #172B4D;">The functionality of the specified module was tested in the mentioned environment (${version}). Based on the results, the ticket is </span><strong style="color: ${summaryColor};">${summaryText}</strong><span style="color: #172B4D;">.</span>`;
+
+            const plainText = `Outcome of Validation:
+
+Module: ${module}
+Environment: ${env}
+Environment Version: ${version}
+Validation Status: ${status}
+Notes: ${notes}
+Attachment: ${attachment}
+Cc: ${cc}
+
+Validation Summary:
+The functionality of the specified module was tested in the mentioned environment (${version}). Based on the results, the ticket is ${summaryText}.`;
+
+            try {
+                const htmlBlob = new Blob([jiraHtml], { type: 'text/html' });
+                const textBlob = new Blob([plainText], { type: 'text/plain' });
+
+                const item = new ClipboardItem({
+                    'text/html': htmlBlob,
+                    'text/plain': textBlob
+                });
+
+                await navigator.clipboard.write([item]);
+
+                // Visual feedback
+                btn.classList.add('copied');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Copied!</span>`;
+
+                showToast();
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = originalText;
+                }, 2500);
+            } catch (err) {
+                // Fallback
+                try {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = jiraHtml;
+                    tempDiv.style.position = 'fixed';
+                    tempDiv.style.left = '-9999px';
+                    document.body.appendChild(tempDiv);
+
+                    const range = document.createRange();
+                    range.selectNodeContents(tempDiv);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+
+                    const successful = document.execCommand('copy');
+                    selection.removeAllRanges();
+                    document.body.removeChild(tempDiv);
+
+                    if (successful) {
+                        btn.classList.add('copied');
+                        setTimeout(() => btn.classList.remove('copied'), 2500);
+                        showToast();
+                    }
+                } catch (e) {
+                    console.error('Copy failed:', e);
+                    alert('Unable to copy. Please manually select and copy the text.');
+                }
+            }
+        }
 
         // Add slideIn keyframes dynamically
         const style = document.createElement('style');
