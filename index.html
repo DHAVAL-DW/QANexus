@@ -2226,6 +2226,64 @@
             transform: scale(0.95);
         }
 
+        /* Environment badge interactive states */
+        #jira-env-badge-qa,
+        #jira-env-badge-sandbox,
+        #jira-env-badge-devteam {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        #jira-env-badge-qa:hover,
+        #jira-env-badge-sandbox:hover,
+        #jira-env-badge-devteam:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #jira-env-badge-qa:active,
+        #jira-env-badge-sandbox:active,
+        #jira-env-badge-devteam:active {
+            transform: scale(0.95);
+        }
+
+        /* Light mode environment badge overrides */
+        [data-theme="light"] #jira-env-badge-qa {
+            background: rgba(99, 102, 241, 0.1) !important;
+            border-color: rgba(99, 102, 241, 0.2) !important;
+            color: #6366f1 !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-qa .bg-indigo-400 {
+            background: #6366f1 !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-sandbox {
+            background: rgba(245, 158, 11, 0.1) !important;
+            border-color: rgba(245, 158, 11, 0.2) !important;
+            color: #d97706 !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-sandbox .bg-amber-400 {
+            background: #f59e0b !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-devteam {
+            background: rgba(6, 182, 212, 0.1) !important;
+            border-color: rgba(6, 182, 212, 0.2) !important;
+            color: #0891b2 !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-devteam .bg-cyan-400 {
+            background: #06b6d4 !important;
+        }
+
+        [data-theme="light"] #jira-env-badge-qa,
+        [data-theme="light"] #jira-env-badge-sandbox,
+        [data-theme="light"] #jira-env-badge-devteam {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         /* Light mode status badge overrides */
         [data-theme="light"] #jira-status-badge-passed {
             background: rgba(16, 185, 129, 0.1) !important;
@@ -2253,6 +2311,7 @@
         }
 
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body class="antialiased">
@@ -3078,7 +3137,18 @@ Tag: Developer Lead, [Your Lead]</div>
                                                 </div>
                                                 <div>
                                                     <span class="text-xs font-semibold text-slate-300 jira-label">Environment:</span>
-                                                    <span class="text-sm text-indigo-400 font-medium ml-1 jira-value" id="jira-env">QA / Sandbox / DevTeam</span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-bold border border-indigo-500/20 ml-1 cursor-pointer hover:opacity-80 transition-all" id="jira-env-badge-qa" onclick="setJiraEnv('QA')" title="Click to set QA">
+                                                        <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full"></span>
+                                                        <span id="jira-env-qa">QA</span>
+                                                    </span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-bold border border-amber-500/20 cursor-pointer hover:opacity-80 transition-all" id="jira-env-badge-sandbox" onclick="setJiraEnv('Sandbox')" title="Click to set Sandbox">
+                                                        <span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+                                                        <span id="jira-env-sandbox">Sandbox</span>
+                                                    </span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 text-[10px] font-bold border border-cyan-500/20 cursor-pointer hover:opacity-80 transition-all" id="jira-env-badge-devteam" onclick="setJiraEnv('DevTeam')" title="Click to set DevTeam">
+                                                        <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+                                                        <span id="jira-env-devteam">DevTeam</span>
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -3525,6 +3595,39 @@ Tag: Developer Lead, [Your Lead]</div>
             setJiraStatus('Passed');
         }
 
+        // ===== ENVIRONMENT TOGGLE =====
+        let jiraEnv = 'QA';
+
+        function setJiraEnv(env) {
+            jiraEnv = env;
+            const badgeQA = document.getElementById('jira-env-badge-qa');
+            const badgeSandbox = document.getElementById('jira-env-badge-sandbox');
+            const badgeDevTeam = document.getElementById('jira-env-badge-devteam');
+
+            // Reset all badges
+            [badgeQA, badgeSandbox, badgeDevTeam].forEach(badge => {
+                badge.style.opacity = '0.4';
+                badge.style.transform = 'scale(0.9)';
+                badge.style.filter = 'grayscale(0.5)';
+            });
+
+            // Activate selected badge
+            let activeBadge;
+            if (env === 'QA') activeBadge = badgeQA;
+            else if (env === 'Sandbox') activeBadge = badgeSandbox;
+            else if (env === 'DevTeam') activeBadge = badgeDevTeam;
+
+            if (activeBadge) {
+                activeBadge.style.opacity = '1';
+                activeBadge.style.transform = 'scale(1)';
+                activeBadge.style.filter = 'none';
+            }
+        }
+
+        function initJiraEnv() {
+            setJiraEnv('QA');
+        }
+
         function selectAllText(element) {
             const range = document.createRange();
             range.selectNodeContents(element);
@@ -3560,7 +3663,7 @@ Tag: Developer Lead, [Your Lead]</div>
 
             // Build the formatted HTML for Jira
             const module = document.getElementById('jira-module').textContent;
-            const env = document.getElementById('jira-env').textContent;
+            const env = jiraEnv;
             const version = document.getElementById('jira-version').textContent;
             const status = jiraStatus;
             const notes = document.getElementById('jira-notes').textContent;
