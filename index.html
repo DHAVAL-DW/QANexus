@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA Hub — Release Guidelines + QA Nexus</title>
+<title>QA Hub — QA Nexus + Release Guidelines</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -103,20 +103,20 @@
 
   <div class="tabbar">
     <div class="brand-mini"><span class="logo">&#10003;</span>QA Hub</div>
-    <button class="tab-btn active-g" id="btn-release" onclick="switchView('release')">
-      <span class="dot"></span> Release Guidelines
-    </button>
-    <button class="tab-btn" id="btn-nexus" onclick="switchView('nexus')">
+    <button class="tab-btn active-n" id="btn-nexus" onclick="switchView('nexus')">
       <span class="dot"></span> QA Nexus
+    </button>
+    <button class="tab-btn" id="btn-release" onclick="switchView('release')">
+      <span class="dot"></span> Release Guidelines
     </button>
   </div>
 
   <div class="views">
-    <div class="view active" id="view-release">
-      <iframe id="frame-release" title="Release Guidelines"></iframe>
-    </div>
-    <div class="view" id="view-nexus">
+    <div class="view active" id="view-nexus">
       <iframe id="frame-nexus" title="QA Nexus"></iframe>
+    </div>
+    <div class="view" id="view-release">
+      <iframe id="frame-release" title="Release Guidelines"></iframe>
     </div>
   </div>
 
@@ -5355,7 +5355,7 @@ The functionality of the specified module was tested in the mentioned environmen
     }
 
     // Preload the first tab
-    loadInto('frame-release', 'tpl-release');
+    loadInto('frame-nexus', 'tpl-nexus');
   </script>
 
 </body>
