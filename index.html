@@ -1,4 +1,1493 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Hub — Release Guidelines + QA Nexus</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #0b0b12;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ===== Tab Bar ===== */
+  .tabbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: rgba(15,15,24,0.92);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(16px);
+    position: relative;
+    z-index: 10;
+  }
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    color: #8b8b9e;
+    background: rgba(255,255,255,0.04);
+    transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+    position: relative;
+  }
+  .tab-btn .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    transition: all 0.3s;
+  }
+  .tab-btn:hover { color:#d6d6e2; background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+  .tab-btn.active-g { color:#fff; background: linear-gradient(135deg,#7c3aed,#059669); box-shadow: 0 4px 18px rgba(124,58,237,0.35); }
+  .tab-btn.active-g .dot { opacity:1; box-shadow: 0 0 8px currentColor; }
+  .tab-btn.active-n { color:#fff; background: linear-gradient(135deg,#6366f1,#ec4899); box-shadow: 0 4px 18px rgba(99,102,241,0.35); }
+  .tab-btn.active-n .dot { opacity:1; box-shadow: 0 0 8px currentColor; }
+
+  .brand-mini {
+    position: absolute;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #55556a;
+  }
+  .brand-mini .logo {
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    background: linear-gradient(135deg,#7c3aed,#059669);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size: 11px;
+  }
+  @media (max-width: 640px) { .brand-mini { display:none; } .tab-btn { padding: 9px 14px; font-size: 12px; } }
+
+  /* ===== Views ===== */
+  .views { flex: 1 1 auto; position: relative; min-height: 0; }
+  .view {
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+  .view.active { display: block; }
+  .view iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #fff;
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+  <div class="tabbar">
+    <div class="brand-mini"><span class="logo">&#10003;</span>QA Hub</div>
+    <button class="tab-btn active-g" id="btn-release" onclick="switchView('release')">
+      <span class="dot"></span> Release Guidelines
+    </button>
+    <button class="tab-btn" id="btn-nexus" onclick="switchView('nexus')">
+      <span class="dot"></span> QA Nexus
+    </button>
+  </div>
+
+  <div class="views">
+    <div class="view active" id="view-release">
+      <iframe id="frame-release" title="Release Guidelines"></iframe>
+    </div>
+    <div class="view" id="view-nexus">
+      <iframe id="frame-nexus" title="QA Nexus"></iframe>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 1 : Release Guidelines (Pre & Post) ===== -->
+  <template id="tpl-release">
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre & Post Release Guidelines — v4.2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================
+     THEME VARIABLES (Light = Default)
+     ===================================================== */
+  :root {
+    --bg: #f6f5f2;
+    --surface: rgba(255,255,255,0.72);
+    --surface-hover: rgba(255,255,255,0.90);
+    --card-solid: #ffffff;
+    --border: rgba(0,0,0,0.07);
+    --border-hover: rgba(0,0,0,0.14);
+    --text-primary: #1a1a1a;
+    --text-secondary: #555555;
+    --text-muted: #888888;
+    --pre-primary: #7c3aed;
+    --pre-glow: rgba(124,58,237,0.18);
+    --pre-deep: #5b21b6;
+    --post-primary: #059669;
+    --post-glow: rgba(5,150,105,0.18);
+    --post-deep: #047857;
+    --accent-amber: #b45309;
+    --accent-red: #dc2626;
+    --accent-blue: #2563eb;
+    --mesh-1: rgba(124,58,237,0.06);
+    --mesh-2: rgba(5,150,105,0.05);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --switch-bg: #e5e5e5;
+    --switch-knob: #ffffff;
+    --switch-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    --noise-opacity: 0.025;
+  }
+
+  [data-theme="dark"] {
+    --bg: #06060a;
+    --surface: rgba(255,255,255,0.03);
+    --surface-hover: rgba(255,255,255,0.06);
+    --card-solid: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.15);
+    --text-primary: #f0f0f5;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --pre-primary: #a78bfa;
+    --pre-glow: rgba(167,139,250,0.35);
+    --pre-deep: #7c3aed;
+    --post-primary: #34d399;
+    --post-glow: rgba(52,211,153,0.35);
+    --post-deep: #059669;
+    --accent-amber: #fbbf24;
+    --accent-red: #f87171;
+    --accent-blue: #60a5fa;
+    --mesh-1: rgba(124,58,237,0.12);
+    --mesh-2: rgba(5,150,105,0.10);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+    --switch-bg: #2d2d3a;
+    --switch-knob: #a78bfa;
+    --switch-shadow: 0 0 12px rgba(167,139,250,0.4);
+    --noise-opacity: 0.03;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+
+  /* =====================================================
+     BACKGROUND
+     ===================================================== */
+  .bg-mesh {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    transition: opacity 0.4s;
+  }
+  .bg-mesh::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, var(--mesh-1) 0%, transparent 70%);
+    animation: float 20s ease-in-out infinite;
+  }
+  .bg-mesh::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, var(--mesh-2) 0%, transparent 70%);
+    animation: float 25s ease-in-out infinite reverse;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(30px,-30px) scale(1.05); }
+    66% { transform: translate(-20px,20px) scale(0.95); }
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--noise-opacity);
+    transition: opacity 0.4s;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px;
+  }
+
+  /* =====================================================
+     LAYOUT
+     ===================================================== */
+  .app {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* =====================================================
+     HEADER
+     ===================================================== */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--pre-primary), var(--post-primary));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px var(--pre-glow), 0 0 40px var(--post-glow);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.4s;
+  }
+  .logo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
+    animation: sheen 4s ease-in-out infinite;
+  }
+  @keyframes sheen {
+    0%,100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+  }
+  .logo svg { width: 22px; height: 22px; position: relative; z-index: 1; }
+  .brand-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .brand-text p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    transition: color 0.4s;
+  }
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s;
+  }
+  .meta-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--post-primary);
+    box-shadow: 0 0 8px var(--post-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+  }
+
+  /* =====================================================
+     THEME TOGGLE
+     ===================================================== */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 6px 6px 14px;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s;
+  }
+  .theme-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.4s;
+  }
+  .toggle-switch {
+    width: 48px;
+    height: 26px;
+    border-radius: 100px;
+    background: var(--switch-bg);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: none;
+    outline: none;
+    flex-shrink: 0;
+  }
+  .toggle-switch .knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--switch-knob);
+    box-shadow: var(--switch-shadow);
+    transition: transform 0.3s cubic-bezier(0.23,1,0.32,1), background 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toggle-switch .knob svg {
+    width: 12px;
+    height: 12px;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+  [data-theme="dark"] .toggle-switch .knob {
+    transform: translateX(22px);
+  }
+  .toggle-switch:hover .knob {
+    transform: scale(1.1) translateX(0);
+  }
+  [data-theme="dark"] .toggle-switch:hover .knob {
+    transform: scale(1.1) translateX(22px);
+  }
+
+  /* =====================================================
+     TABS
+     ===================================================== */
+  .tab-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .tab-switch {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px;
+    position: relative;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s;
+  }
+  .tab-switch button {
+    position: relative;
+    padding: 12px 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: color 0.3s ease;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab-switch button.active { color: #fff; }
+  .tab-switch .glider {
+    position: absolute;
+    top: 6px; bottom: 6px;
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1;
+  }
+  .tab-switch.pre .glider {
+    left: 6px;
+    width: calc(50% - 6px);
+    background: linear-gradient(135deg, var(--pre-deep), var(--pre-primary));
+    box-shadow: 0 4px 20px var(--pre-glow);
+  }
+  .tab-switch.post .glider {
+    left: 50%;
+    width: calc(50% - 6px);
+    background: linear-gradient(135deg, var(--post-deep), var(--post-primary));
+    box-shadow: 0 4px 20px var(--post-glow);
+  }
+  .tab-icon { width: 16px; height: 16px; }
+
+  /* =====================================================
+     PANELS
+     ===================================================== */
+  .panel { display: none; animation: panelIn 0.5s cubic-bezier(0.23,1,0.32,1) forwards; }
+  .panel.active { display: block; }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* =====================================================
+     BENTO GRID
+     ===================================================== */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+  .bento > * { animation: staggerIn 0.6s cubic-bezier(0.23,1,0.32,1) both; }
+  .bento > *:nth-child(1) { animation-delay: 0.05s; }
+  .bento > *:nth-child(2) { animation-delay: 0.10s; }
+  .bento > *:nth-child(3) { animation-delay: 0.15s; }
+  .bento > *:nth-child(4) { animation-delay: 0.20s; }
+  .bento > *:nth-child(5) { animation-delay: 0.25s; }
+  .bento > *:nth-child(6) { animation-delay: 0.30s; }
+  .bento > *:nth-child(7) { animation-delay: 0.35s; }
+  @keyframes staggerIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =====================================================
+     CARDS
+     ===================================================== */
+  .card {
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.4s;
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    opacity: 0.5;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg);
+  }
+  .card-glow-pre:hover {
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(124,58,237,0.15), 0 0 60px rgba(124,58,237,0.06);
+  }
+  .card-glow-post:hover {
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(5,150,105,0.15), 0 0 60px rgba(5,150,105,0.06);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: background 0.4s;
+  }
+  .card-icon.pre { background: rgba(124,58,237,0.10); }
+  .card-icon.post { background: rgba(5,150,105,0.10); }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.4s;
+  }
+
+  /* =====================================================
+     HERO CARD
+     ===================================================== */
+  .hero-card {
+    grid-column: span 12;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.20;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .hero-card.pre-hero { background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(124,58,237,0.02)); }
+  .hero-card.pre-hero .orb-1 { width: 300px; height: 300px; background: var(--pre-primary); top: -100px; right: -50px; }
+  .hero-card.pre-hero .orb-2 { width: 200px; height: 200px; background: var(--pre-deep); bottom: -80px; left: 10%; }
+  .hero-card.post-hero { background: linear-gradient(135deg, rgba(5,150,105,0.06), rgba(5,150,105,0.02)); }
+  .hero-card.post-hero .orb-1 { width: 300px; height: 300px; background: var(--post-primary); top: -100px; right: -50px; }
+  .hero-card.post-hero .orb-2 { width: 200px; height: 200px; background: var(--post-deep); bottom: -80px; left: 10%; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transition: all 0.4s;
+  }
+  .hero-badge.pre { background: rgba(124,58,237,0.10); color: var(--pre-primary); border: 1px solid rgba(124,58,237,0.18); }
+  .hero-badge.post { background: rgba(5,150,105,0.10); color: var(--post-primary); border: 1px solid rgba(5,150,105,0.18); }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    transition: color 0.4s;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 400px;
+    line-height: 1.5;
+    transition: color 0.4s;
+  }
+  .version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s;
+  }
+
+  /* =====================================================
+     ENVIRONMENTS
+     ===================================================== */
+  .env-card { grid-column: span 7; }
+  .env-list { display: flex; flex-direction: column; gap: 12px; }
+  .env-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+  }
+  .env-item:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateX(4px); box-shadow: var(--shadow-md); }
+  .env-flag {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: background 0.4s;
+  }
+  .env-info { flex: 1; min-width: 0; }
+  .env-name { font-weight: 600; font-size: 14px; transition: color 0.4s; }
+  .env-link {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 12px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    word-break: break-all;
+  }
+  .env-link:hover { opacity: 1; text-decoration: underline; }
+  .env-arrow {
+    color: var(--text-muted);
+    opacity: 0;
+    transition: all 0.2s ease;
+    transform: translateX(-4px);
+  }
+  .env-item:hover .env-arrow { opacity: 1; transform: translateX(0); }
+
+  /* =====================================================
+     CONFIG
+     ===================================================== */
+  .config-card { grid-column: span 5; }
+  .config-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    transition: border-color 0.4s;
+  }
+  .config-row:last-child { border-bottom: none; }
+  .config-key { font-size: 13px; color: var(--text-muted); flex-shrink: 0; transition: color 0.4s; }
+  .config-val {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: right;
+    word-break: break-all;
+    transition: color 0.4s;
+  }
+  .config-note {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(180,83,9,0.06);
+    border: 1px solid rgba(180,83,9,0.12);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--accent-amber);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+    transition: all 0.4s;
+  }
+  [data-theme="dark"] .config-note {
+    background: rgba(251,191,36,0.08);
+    border-color: rgba(251,191,36,0.15);
+  }
+
+  /* =====================================================
+     TEAM
+     ===================================================== */
+  .team-card { grid-column: span 12; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .team-block {
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+  }
+  .team-block:hover { background: var(--surface-hover); border-color: var(--border-hover); box-shadow: var(--shadow-md); }
+  .team-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .team-region { font-weight: 700; font-size: 14px; transition: color 0.4s; }
+  .team-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    transition: all 0.4s;
+  }
+  .tag-full { background: rgba(5,150,105,0.10); color: var(--post-primary); }
+  .tag-smoke { background: rgba(180,83,9,0.10); color: var(--accent-amber); }
+  .tag-special { background: rgba(124,58,237,0.10); color: var(--pre-primary); }
+  .team-members { display: flex; flex-wrap: wrap; gap: 6px; }
+  .member-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .member-chip:hover { background: var(--surface-hover); color: var(--text-primary); transform: scale(1.05); box-shadow: var(--shadow-sm); }
+  .member-avatar {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pre-primary), var(--post-primary));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  /* =====================================================
+     FUNCTIONALITIES
+     ===================================================== */
+  .func-card { grid-column: span 8; }
+  .func-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .func-tag {
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: default;
+    transition: all 0.25s cubic-bezier(0.23,1,0.32,1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+  .func-tag::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .func-tag:hover::before { transform: translateX(100%); }
+  .func-tag:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .panel-pre .func-tag:hover { border-color: rgba(124,58,237,0.25); color: var(--pre-primary); }
+  .panel-post .func-tag:hover { border-color: rgba(5,150,105,0.25); color: var(--post-primary); }
+
+  /* =====================================================
+     BUG & DEADLINE
+     ===================================================== */
+  .bug-card { grid-column: span 7; }
+  .bug-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    transition: border-color 0.4s;
+  }
+  .bug-row:last-child { border-bottom: none; }
+  .bug-key { font-size: 13px; color: var(--text-muted); transition: color 0.4s; }
+  .bug-val {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-all;
+    transition: color 0.4s;
+  }
+  .bug-val a { color: var(--accent-blue); text-decoration: none; transition: opacity 0.2s; }
+  .bug-val a:hover { opacity: 0.8; text-decoration: underline; }
+  .label-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.4s;
+  }
+  .label-red { background: rgba(220,38,38,0.08); color: var(--accent-red); border: 1px solid rgba(220,38,38,0.15); }
+  .label-amber { background: rgba(180,83,9,0.08); color: var(--accent-amber); border: 1px solid rgba(180,83,9,0.15); }
+  [data-theme="dark"] .label-red { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.2); }
+  [data-theme="dark"] .label-amber { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.2); }
+
+  .deadline-card {
+    grid-column: span 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .deadline-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, var(--pre-primary), var(--post-primary));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.25;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .deadline-card:hover::after { opacity: 0.5; }
+  .deadline-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    transition: color 0.4s;
+  }
+  .deadline-date {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background 0.4s;
+  }
+  .deadline-time {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.4s;
+  }
+  .deadline-urgency {
+    margin-top: 16px;
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+    transition: background 0.4s;
+  }
+  [data-theme="dark"] .deadline-urgency { background: rgba(255,255,255,0.05); }
+  .deadline-urgency::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 65%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--pre-primary), var(--post-primary));
+    animation: urgency 2s ease-in-out infinite;
+  }
+  @keyframes urgency {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* =====================================================
+     RESPONSIVE
+     ===================================================== */
+  @media (max-width: 900px) {
+    .env-card, .config-card, .func-card, .bug-card, .deadline-card { grid-column: span 12; }
+    .hero-title { font-size: 22px; }
+    .deadline-date { font-size: 28px; }
+  }
+  @media (max-width: 600px) {
+    .app { padding: 24px 16px 60px; }
+    .header { flex-direction: column; align-items: flex-start; }
+    .tab-switch button { padding: 10px 20px; font-size: 13px; }
+    .team-grid { grid-template-columns: 1fr; }
+  }
+
+  /* =====================================================
+     SCROLLBAR
+     ===================================================== */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 100px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.20); }
+  [data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); }
+  [data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+</style>
+</head>
+<body data-theme="light">
+
+<div class="bg-mesh"></div>
+<div class="noise"></div>
+
+<div class="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 11L9.5 16.5L18 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>Release Guidelines</h1>
+        <p>Pre & Post validation protocol</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="theme-toggle">
+        <span class="theme-label">Theme</span>
+        <button class="toggle-switch" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <div class="knob">
+            <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+        </button>
+      </div>
+      <div class="meta-pill">
+        <span class="dot"></span>
+        <span>v4.2.0 Sandbox</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <div class="tab-switch pre" id="tabSwitch">
+      <div class="glider"></div>
+      <button class="active" onclick="switchTab('pre')">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Pre-Release
+      </button>
+      <button onclick="switchTab('post')">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Post-Release
+      </button>
+    </div>
+  </div>
+
+  <!-- PRE-RELEASE PANEL -->
+  <div class="panel panel-pre active" id="panel-pre">
+    <div class="bento">
+
+      <!-- Hero -->
+      <div class="card hero-card pre-hero">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div>
+          <div class="hero-badge pre">Phase 01 — Pre-Release</div>
+          <h2 class="hero-title">Validation Assignment</h2>
+          <p class="hero-sub">Sandbox environment verification across all regions before production deployment.</p>
+        </div>
+        <div class="version-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          v4.2.0 · Sandbox
+        </div>
+      </div>
+
+      <!-- Environments -->
+      <div class="card env-card card-glow-pre">
+        <div class="card-header">
+          <div class="card-icon pre">🌐</div>
+          <div class="card-title">Regional URLs</div>
+        </div>
+        <div class="env-list">
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(37,99,235,0.10);">🇺🇸</div>
+            <div class="env-info">
+              <div class="env-name">North America</div>
+              <a href="https://nuwave.sandbox.ipilot.io/" class="env-link" target="_blank">nuwave.sandbox.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(5,150,105,0.10);">🇪🇺</div>
+            <div class="env-info">
+              <div class="env-name">Europe</div>
+              <a href="https://nuwave.uk.sandbox.ipilot.io/" class="env-link" target="_blank">nuwave.uk.sandbox.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(220,38,38,0.10);">🇦🇺</div>
+            <div class="env-info">
+              <div class="env-name">Oceania</div>
+              <a href="https://nuwave.au.sandbox.ipilot.io/" class="env-link" target="_blank">nuwave.au.sandbox.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(124,58,237,0.10);">🌏</div>
+            <div class="env-info">
+              <div class="env-name">Asia Pacific</div>
+              <a href="https://nuwave.au.sandbox.ipilot.io/" class="env-link" target="_blank">nuwave.au.sandbox.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Config -->
+      <div class="card config-card card-glow-pre">
+        <div class="card-header">
+          <div class="card-icon pre">⚙️</div>
+          <div class="card-title">Configuration</div>
+        </div>
+        <div class="config-row"><span class="config-key">Route label</span><span class="config-val">BPMS_TEST</span></div>
+        <div class="config-row"><span class="config-key">Outbound route</span><span class="config-val">SND:0:0001</span></div>
+        <div class="config-row"><span class="config-key">Five9 POID</span><span class="config-val">134750</span></div>
+        <div class="config-row"><span class="config-key">Rainbow FQDN</span><span class="config-val">46647.rainbow.com</span></div>
+        <div class="config-note">
+          <span>⚠️</span>
+          <span>Outbound route may vary per region — confirm with the respective regional team before proceeding.</span>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="card team-card card-glow-pre">
+        <div class="card-header">
+          <div class="card-icon pre">👥</div>
+          <div class="card-title">Task Allocation</div>
+        </div>
+        <div class="team-grid">
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">North America</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">N</span>Niki Patel</span>
+              <span class="member-chip"><span class="member-avatar">J</span>Janvi Rajpurohit</span>
+              <span class="member-chip"><span class="member-avatar">P</span>Pavan Soni</span>
+              <span class="member-chip"><span class="member-avatar">R</span>Rutul Shah</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Europe</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">M</span>Mayur Sonagra</span>
+              <span class="member-chip"><span class="member-avatar">Y</span>Yogita Rajpurohit</span>
+              <span class="member-chip"><span class="member-avatar">K</span>Kush Panchal</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Oceania & AP</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">H</span>Hardik Vanpariya</span>
+              <span class="member-chip"><span class="member-avatar">P</span>Prajakta Bijekar</span>
+              <span class="member-chip"><span class="member-avatar">S</span>Shradhdha Bakutra (OPTIONAL)</span>
+              <span class="func-tag">Oceania - Symbio, Entrust, NTT </span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Sub-modules</span>
+              <span class="team-tag tag-special">Special</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">H</span>Hetal's team</span>
+              <span class="member-chip"><span class="member-avatar">D</span>Dhanal's team</span>
+              <span class="member-chip"><span class="member-avatar">G</span>Gunjan's Team</span>
+              <span class="member-chip"><span class="member-avatar">Z</span>Zalak's Team</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Feature tickets</span>
+              <span class="team-tag tag-special">Special</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">H</span>Hetal Mota</span>
+              <span class="member-chip"><span class="member-avatar">D</span>Dhanal Patel</span>
+              <span class="member-chip"><span class="member-avatar">G</span>Gunjan Patel</span>
+               <span class="member-chip"><span class="member-avatar">M</span>Margesh Shah</span>
+               <span class="member-chip"><span class="member-avatar">Z</span>Zalak Jagodana</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functionalities -->
+      <div class="card func-card card-glow-pre">
+        <div class="card-header">
+          <div class="card-icon pre">🔍</div>
+          <div class="card-title">Functionalities to Validate</div>
+        </div>
+        <div class="func-cloud">
+          <span class="func-tag">Order process</span>
+          <span class="func-tag">Inventory</span>
+          <span class="func-tag">Reports</span>
+          <span class="func-tag">Billing transactions</span>
+          <span class="func-tag">Bulk management</span>
+          <span class="func-tag">Manage inventory</span>
+          <span class="func-tag">Provision assignment</span>
+          <span class="func-tag">Module Integration</span>
+          <span class="func-tag">Disconnect Order Process</span>
+          <span class="func-tag">V4 Overview Reseller Profile - Rutul Shah</span>
+        </div>
+      </div>
+
+      <!-- Bug -->
+      <div class="card bug-card card-glow-pre">
+        <div class="card-header">
+          <div class="card-icon pre">🐛</div>
+          <div class="card-title">Bug Reporting</div>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Pre-Release Bug Label</span>
+          <span class="bug-val"><span class="label-pill label-red">PreSP61</span></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Working Feature Broken</span>
+          <span class="bug-val"><span class="label-pill label-amber">WFB61</span></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Bug Parent epic</span>
+          <span class="bug-val"><a href="https://nuwavecomm.atlassian.net/browse/IP-57118" target="_blank">IP-57118 ↗</a></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">QA Pre-Post Time Logging</span>
+          <span class="bug-val"><a href="https://nuwavecomm.atlassian.net/browse/IP-57113" target="_blank">IP-57113 ↗</a></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">TestMo Pre-Release Run</span>
+          <span class="bug-val"><a href="https://nuwave.testmo.net/runs/view/1397" target="_blank">Test Run #1397 ↗</a></span>
+        </div>
+      </div>
+
+      <!-- Deadline -->
+      <div class="card deadline-card card-glow-pre">
+        <div class="deadline-label">Completion Deadline</div>
+        <div class="deadline-date">9th Dec 2026</div>
+        <div class="deadline-time">3:00 PM sharp</div>
+        <div class="deadline-urgency"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POST-RELEASE PANEL -->
+  <div class="panel panel-post" id="panel-post">
+    <div class="bento">
+
+      <!-- Hero -->
+      <div class="card hero-card post-hero">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div>
+          <div class="hero-badge post">Phase 02 — Post-Release</div>
+          <h2 class="hero-title">Validation Assignment</h2>
+          <p class="hero-sub">Devteam environment verification across all regions after production deployment.</p>
+        </div>
+        <div class="version-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          v4.2.0 · Devteam
+        </div>
+      </div>
+
+      <!-- Environments -->
+      <div class="card env-card card-glow-post">
+        <div class="card-header">
+          <div class="card-icon post">🌐</div>
+          <div class="card-title">Regional URLs</div>
+        </div>
+        <div class="env-list">
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(37,99,235,0.10);">🇺🇸</div>
+            <div class="env-info">
+              <div class="env-name">North America</div>
+              <a href="https://devteam.ipilot.io/" class="env-link" target="_blank">devteam.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(5,150,105,0.10);">🇪🇺</div>
+            <div class="env-info">
+              <div class="env-name">Europe</div>
+              <a href="https://devteameu.ipilot.io/" class="env-link" target="_blank">devteameu.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+          <div class="env-item">
+            <div class="env-flag" style="background:rgba(220,38,38,0.10);">🇦🇺</div>
+            <div class="env-info">
+              <div class="env-name">Oceania & AP</div>
+              <a href="https://devteamau.ipilot.io/" class="env-link" target="_blank">devteamau.ipilot.io</a>
+            </div>
+            <div class="env-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Config -->
+      <div class="card config-card card-glow-post">
+        <div class="card-header">
+          <div class="card-icon post">⚙️</div>
+          <div class="card-title">Configuration</div>
+        </div>
+        <div class="config-row"><span class="config-key">Route label</span><span class="config-val">BPMS_TEST</span></div>
+        <div class="config-row"><span class="config-key">Outbound route</span><span class="config-val">NUW:0:0001</span></div>
+        <div class="config-row"><span class="config-key">Five9 POID</span><span class="config-val">123450000 / 123460000</span></div>
+        <div class="config-row"><span class="config-key">Genesys POID</span><span class="config-val">testdornfqdn1 / testdornfqdn2</span></div>
+        <div class="config-row"><span class="config-key">Rainbow FQDN</span><span class="config-val">12345.rainbow.com</span></div>
+        <div class="config-note">
+          <span>⚠️</span>
+          <span>Outbound route may vary per region — confirm with the respective regional team before proceeding.</span>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="card team-card card-glow-post">
+        <div class="card-header">
+          <div class="card-icon post">👥</div>
+          <div class="card-title">Task Allocation</div>
+        </div>
+        <div class="team-grid">
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">North America</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">P</span>Pavan Soni</span>
+              <span class="member-chip"><span class="member-avatar">R</span>Rutul Shah</span>
+              <span class="member-chip"><span class="member-avatar">H</span>Hetal Mota</span>
+              <span class="member-chip"><span class="member-avatar">Z</span>Zalak Jagodana</span>
+              <span class="member-chip"><span class="member-avatar">J</span>Janvi Rajpurohit</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Europe</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">K</span>Kush Panchal</span>
+              <span class="member-chip"><span class="member-avatar">M</span>Mayur Sonagara</span>
+              <span class="member-chip"><span class="member-avatar">Y</span>Yogita Rajpurohit</span>
+              <span class="member-chip"><span class="member-avatar">G</span>Gunjan Patel</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Oceania & AP</span>
+              <span class="team-tag tag-full">Full Regression</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">P</span>Prajakta Bijekar</span>
+              <span class="member-chip"><span class="member-avatar">D</span>Dhanal Patel</span>
+              <span class="member-chip"><span class="member-avatar">H</span>Hardik Vanpariya</span>
+              <span class="member-chip"><span class="member-avatar">M</span>Margesh Shah</span>
+            </div>
+          </div>
+          <div class="team-block">
+            <div class="team-header">
+              <span class="team-region">Sub-modules</span>
+              <span class="team-tag tag-special">Special</span>
+            </div>
+            <div class="team-members">
+              <span class="member-chip"><span class="member-avatar">A</span> SMB - Hetal </span>
+              <span class="member-chip"><span class="member-avatar">A</span>Dubber, Smarsh - Dhanal</span>
+              <span class="member-chip"><span class="member-avatar">A</span> Self Activation - Gunjan</span>
+              <span class="member-chip"><span class="member-avatar">A</span> Site - Yogita </span>
+              <span class="member-chip"><span class="member-avatar">A</span> Reseller, Customer - Mayur </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functionalities -->
+      <div class="card func-card card-glow-post">
+        <div class="card-header">
+          <div class="card-icon post">🔍</div>
+          <div class="card-title">Functionalities to Validate</div>
+        </div>
+        <div class="func-cloud">
+          <span class="func-tag">Order process</span>
+          <span class="func-tag">Inventory</span>
+          <span class="func-tag">Reports</span>
+          <span class="func-tag">Billing transactions</span>
+          <span class="func-tag">Bulk management</span>
+          <span class="func-tag">Manage inventory</span>
+          <span class="func-tag">Provision assign</span>
+          <span class="func-tag">Reseller & Customer Creation</span>
+        </div>
+      </div>
+
+      <!-- Bug -->
+      <div class="card bug-card card-glow-post">
+        <div class="card-header">
+          <div class="card-icon post">🐛</div>
+          <div class="card-title">Bug Reporting</div>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Post-Release Bug Label</span>
+          <span class="bug-val"><span class="label-pill label-red">PostSP61</span></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Working Feature Broken</span>
+          <span class="bug-val"><span class="label-pill label-amber">WFB61</span></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Bug Parent epic</span>
+          <span class="bug-val"><a href="https://nuwavecomm.atlassian.net/browse/IP-57119" target="_blank">IP-57119 ↗</a></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">Pre-Post Time Logging</span>
+          <span class="bug-val"><a href="https://nuwavecomm.atlassian.net/browse/IP-57114" target="_blank">IP-57114 ↗</a></span>
+        </div>
+        <div class="bug-row">
+          <span class="bug-key">TestMo Post-Release run</span>
+          <span class="bug-val"><a href="https://nuwave.testmo.net/runs/view/1398" target="_blank">Test Run #1398 ↗</a></span>
+        </div>
+      </div>
+
+      <!-- Deadline -->
+      <div class="card deadline-card card-glow-post">
+        <div class="deadline-label">Completion Deadline</div>
+        <div class="deadline-date">14th Dec 2026</div>
+        <div class="deadline-time">3:00 PM sharp</div>
+        <div class="deadline-urgency"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Theme Toggle
+  function toggleTheme() {
+    const body = document.body;
+    const sun = document.getElementById('sunIcon');
+    const moon = document.getElementById('moonIcon');
+    const isDark = body.getAttribute('data-theme') === 'dark';
+
+    if (isDark) {
+      body.setAttribute('data-theme', 'light');
+      sun.style.display = 'block';
+      moon.style.display = 'none';
+      localStorage.setItem('theme', 'light');
+    } else {
+      body.setAttribute('data-theme', 'dark');
+      sun.style.display = 'none';
+      moon.style.display = 'block';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Restore saved theme
+  (function() {
+    const saved = localStorage.getItem('theme');
+    const sun = document.getElementById('sunIcon');
+    const moon = document.getElementById('moonIcon');
+    if (saved === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+      sun.style.display = 'none';
+      moon.style.display = 'block';
+    }
+  })();
+
+  // Tab Switch
+  function switchTab(tab) {
+    const switcher = document.getElementById('tabSwitch');
+    const buttons = switcher.querySelectorAll('button');
+    const panels = document.querySelectorAll('.panel');
+
+    buttons.forEach((btn, i) => {
+      btn.classList.toggle('active', (tab === 'pre' && i === 0) || (tab === 'post' && i === 1));
+    });
+
+    switcher.className = 'tab-switch ' + tab;
+
+    panels.forEach(p => {
+      if (p.id === 'panel-' + tab) {
+        p.classList.add('active');
+        p.style.animation = 'none';
+        void p.offsetWidth;
+        p.style.animation = '';
+      } else {
+        p.classList.remove('active');
+      }
+    });
+
+    const meta = document.querySelector('.meta-pill span:last-child');
+    meta.textContent = tab === 'pre' ? 'v4.2.0 Sandbox' : 'v4.2.0 Devteam';
+  }
+</script>
+
+</body>
+</html>
+
+  </template>
+
+  <!-- ===== PAGE 2 : QA Nexus ===== -->
+  <template id="tpl-nexus">
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
@@ -3838,5 +5327,36 @@ The functionality of the specified module was tested in the mentioned environmen
             }, 2500);
         }
     </script>
+</body>
+</html>
+  </template>
+
+  <script>
+    function loadInto(frameId, tplId) {
+      var f = document.getElementById(frameId);
+      if (f.dataset.loaded) return;
+      var tpl = document.getElementById(tplId);
+      f.srcdoc = '<!DOCTYPE html>' + tpl.innerHTML;
+      f.dataset.loaded = '1';
+    }
+
+    function switchView(name) {
+      var views = { release: 'view-release', nexus: 'view-nexus' };
+      var btns  = { release: 'btn-release',  nexus: 'btn-nexus'  };
+
+      Object.keys(views).forEach(function (k) {
+        document.getElementById(views[k]).classList.toggle('active', k === name);
+        var b = document.getElementById(btns[k]);
+        b.classList.toggle('active-g', k === name && k === 'release');
+        b.classList.toggle('active-n', k === name && k === 'nexus');
+      });
+
+      loadInto('frame-' + name, 'tpl-' + name);
+    }
+
+    // Preload the first tab
+    loadInto('frame-release', 'tpl-release');
+  </script>
+
 </body>
 </html>
